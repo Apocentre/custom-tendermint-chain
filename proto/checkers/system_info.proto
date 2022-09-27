@@ -1,0 +1,9 @@
+syntax = "proto3";
+package apocentre.checkers.checkers;
+
+option go_package = "github.com/apocentre/checkers/x/checkers/types";
+
+message SystemInfo {
+  int32 nextId = 1; 
+  
+}
