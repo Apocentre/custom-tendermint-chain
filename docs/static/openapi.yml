@@ -231,8 +231,8 @@ paths:
                 type: object
                 properties:
                   nextId:
-                    type: integer
-                    format: int32
+                    type: string
+                    format: uint64
         default:
           description: An unexpected error response.
           schema:
@@ -30752,8 +30752,8 @@ definitions:
         type: object
         properties:
           nextId:
-            type: integer
-            format: int32
+            type: string
+            format: uint64
   apocentre.checkers.checkers.QueryParamsResponse:
     type: object
     properties:
@@ -30778,8 +30778,8 @@ definitions:
     type: object
     properties:
       nextId:
-        type: integer
-        format: int32
+        type: string
+        format: uint64
   cosmos.base.query.v1beta1.PageRequest:
     type: object
     properties:

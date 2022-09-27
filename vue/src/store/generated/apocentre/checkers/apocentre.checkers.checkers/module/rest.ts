@@ -54,8 +54,8 @@ export interface CheckersStoredGame {
 }
 
 export interface CheckersSystemInfo {
-  /** @format int32 */
-  nextId?: number;
+  /** @format uint64 */
+  nextId?: string;
 }
 
 export interface ProtobufAny {
