@@ -17,11 +17,11 @@ const (
 
 func GetStoredGame1() types.StoredGame {
 	return types.StoredGame{
-			Black: alice,
-			Red:   bob,
-			Index: "1",
-			Board: rules.New().String(),
-			Turn:  "b",
+		Black: alice,
+		Red:   bob,
+		Index: "1",
+		Board: rules.New().String(),
+		Turn:  "b",
 	}
 }
 
@@ -37,7 +37,7 @@ func TestCanGetAddressBlack(t *testing.T) {
 func TestCanGetAddressWrongBlack(t *testing.T) {
 	storedGame := GetStoredGame1()
 	storedGame.Black = "cosmos1jmjfq0tplp9tmx4v9uemw72y4d2wa5nr3xn9d4" // Bad last digit
-	
+
 	black, err := storedGame.GetBlackAddress()
 
 	require.Nil(t, black)
