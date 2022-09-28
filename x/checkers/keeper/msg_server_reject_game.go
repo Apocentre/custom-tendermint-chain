@@ -46,6 +46,13 @@ func (k msgServer) RejectGame(goCtx context.Context, msg *types.MsgRejectGame) (
 	k.Keeper.RemoveStoredGame(ctx, msg.GameIndex)
 	k.Keeper.SetSystemInfo(ctx, systemInfo)
 
+	// When handling a game rejection, you make sure that you are not refunding more than what has already been consumed
+	refund := uint64(types.RejectGameRefundGas)
+	if consumed := ctx.GasMeter().GasConsumed(); consumed < refund {
+		refund = consumed
+	}
+	ctx.GasMeter().RefundGas(refund, "Reject game")
+
 	ctx.EventManager().EmitEvent(
     sdk.NewEvent(types.GameRejectedEventType,
         sdk.NewAttribute(types.GameRejectedEventCreator, msg.Creator),

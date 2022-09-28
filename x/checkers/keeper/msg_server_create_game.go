@@ -51,6 +51,9 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 	systemInfo.NextId += 1
 	k.Keeper.SetSystemInfo(ctx, systemInfo)
 
+	// Add a line that consumes or refunds the designated amount of gas in each relevant handler
+	ctx.GasMeter().ConsumeGas(types.CreateGameGas, "Create game")
+
 	// Now you must implement this correspondingly in the GUI, or include a server to listen for such events.
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(types.GameCreatedEventType,

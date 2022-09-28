@@ -74,3 +74,11 @@ const (
 const (
 	GameCreatedEventWager = "wager"
 )
+
+// To get a rule-of-thumb idea of how much gas is already consumed without your additions,
+// look back at your previous transactions
+const (
+	CreateGameGas       = 15000
+	PlayMoveGas         = 1000
+	RejectGameRefundGas = 14000
+)
