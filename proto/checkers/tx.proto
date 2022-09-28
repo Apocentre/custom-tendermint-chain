@@ -25,7 +25,7 @@ message MsgCreateGameResponse {
 message MsgPlayMove {
   string creator = 1;
   string gameIndex = 2;
-  uint64 from = 3;
+  uint64 fromX = 3;
   uint64 fromY = 4;
   uint64 toX = 5;
   uint64 toY = 6;

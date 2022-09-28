@@ -13,7 +13,7 @@ func NewMsgPlayMove(creator string, gameIndex string, from uint64, fromY uint64,
 	return &MsgPlayMove{
 		Creator:   creator,
 		GameIndex: gameIndex,
-		From:      from,
+		FromX:     fromx,
 		FromY:     fromY,
 		ToX:       toX,
 		ToY:       toY,
