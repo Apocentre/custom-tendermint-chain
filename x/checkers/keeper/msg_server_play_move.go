@@ -64,9 +64,18 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 	// Prepare the updated board to be stored and store the information:
 	storedGame.Board = game.String()
 	storedGame.Turn = rules.PieceStrings[game.Turn]
+
+	systemInfo, found := k.Keeper.GetSystemInfo(ctx)
+	if !found {
+		panic("SystemInfo not found")
+	}
+	// when playing a move send the game back to the tail because it was freshly updated
+	k.Keeper.SendToFifoTail(ctx, &storedGame, &systemInfo)
+
 	storedGame.MoveCount++
 
 	k.Keeper.SetStoredGame(ctx, storedGame)
+	k.Keeper.SetSystemInfo(ctx, systemInfo)
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(types.MovePlayedEventType,

@@ -28,6 +28,8 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 		Black: msg.Black,
 		Red:   msg.Red,
 		MoveCount: 0,
+		BeforeIndex: types.NoFifoIndex,
+    AfterIndex:  types.NoFifoIndex,
 	}
 
 	// Confirm that the values in the object are correct by checking the validity
@@ -37,6 +39,8 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 		return nil, err
 	}
 
+	// Send the new game to the tail because it is freshly created
+	k.Keeper.SendToFifoTail(ctx, &storedGame, &systemInfo)
 	// Save the StoredGame object using the Keeper.SetStoredGame
 	k.Keeper.SetStoredGame(ctx, storedGame)
 

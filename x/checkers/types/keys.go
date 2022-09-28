@@ -47,3 +47,8 @@ const (
 	GameRejectedEventCreator   = "creator"
 	GameRejectedEventGameIndex = "game-index"
 )
+
+// There must be an "ID" that indicates no game. Use "-1", which you save as a constant:
+const (
+	NoFifoIndex = "-1"
+)

@@ -28,8 +28,16 @@ func (k msgServer) RejectGame(goCtx context.Context, msg *types.MsgRejectGame) (
 		return nil, sdkerrors.Wrapf(types.ErrCreatorNotPlayer, "%s", msg.Creator)
 	}
 
+	systemInfo, found := k.Keeper.GetSystemInfo(ctx)
+	if !found {
+			panic("SystemInfo not found")
+	}
+	// when rejecting a game remove the game from the FIFO:
+	k.Keeper.RemoveFromFifo(ctx, &storedGame, &systemInfo)
+
 	// Remove the game using the Keeper.RemoveStoredGame (opens new window)function created long ago by the ignite scaffold map storedGame
 	k.Keeper.RemoveStoredGame(ctx, msg.GameIndex)
+	k.Keeper.SetSystemInfo(ctx, systemInfo)
 
 	ctx.EventManager().EmitEvent(
     sdk.NewEvent(types.GameRejectedEventType,
