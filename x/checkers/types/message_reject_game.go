@@ -5,30 +5,26 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-const TypeMsgPlayMove = "play_move"
+const TypeMsgRejectGame = "reject_game"
 
-var _ sdk.Msg = &MsgPlayMove{}
+var _ sdk.Msg = &MsgRejectGame{}
 
-func NewMsgPlayMove(creator string, gameIndex string, fromX uint64, fromY uint64, toX uint64, toY uint64) *MsgPlayMove {
-	return &MsgPlayMove{
+func NewMsgRejectGame(creator string, gameIndex string) *MsgRejectGame {
+	return &MsgRejectGame{
 		Creator:   creator,
 		GameIndex: gameIndex,
-		FromX:     fromX,
-		FromY:     fromY,
-		ToX:       toX,
-		ToY:       toY,
 	}
 }
 
-func (msg *MsgPlayMove) Route() string {
+func (msg *MsgRejectGame) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgPlayMove) Type() string {
-	return TypeMsgPlayMove
+func (msg *MsgRejectGame) Type() string {
+	return TypeMsgRejectGame
 }
 
-func (msg *MsgPlayMove) GetSigners() []sdk.AccAddress {
+func (msg *MsgRejectGame) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -36,12 +32,12 @@ func (msg *MsgPlayMove) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgPlayMove) GetSignBytes() []byte {
+func (msg *MsgRejectGame) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgPlayMove) ValidateBasic() error {
+func (msg *MsgRejectGame) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

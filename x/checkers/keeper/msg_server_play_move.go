@@ -16,7 +16,7 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 	// fetch the stored game information using the Keeper.GetStoredGame
 	storedGame, found := k.Keeper.GetStoredGame(ctx, msg.GameIndex)
 	if !found {
-	return nil, sdkerrors.Wrapf(types.ErrGameNotFound, "%s", msg.GameIndex)
+		return nil, sdkerrors.Wrapf(types.ErrGameNotFound, "%s", msg.GameIndex)
 	}
 
 	// Is the player legitimate
@@ -43,19 +43,19 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 
 	// Is it the player's turn? Check using the rules file's own TurnIs (opens new window)function:
 	if !game.TurnIs(player) {
-    return nil, sdkerrors.Wrapf(types.ErrNotPlayerTurn, "%s", player)
+		return nil, sdkerrors.Wrapf(types.ErrNotPlayerTurn, "%s", player)
 	}
 
 	// Properly conduct the move, using the rules' Move (opens new window)function:
 	captured, moveErr := game.Move(
-    rules.Pos{
+		rules.Pos{
 			X: int(msg.FromX),
 			Y: int(msg.FromY),
-    },
-    rules.Pos{
+		},
+		rules.Pos{
 			X: int(msg.ToX),
 			Y: int(msg.ToY),
-    },
+		},
 	)
 	if moveErr != nil {
 		return nil, sdkerrors.Wrapf(types.ErrWrongMove, moveErr.Error())
@@ -64,22 +64,24 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 	// Prepare the updated board to be stored and store the information:
 	storedGame.Board = game.String()
 	storedGame.Turn = rules.PieceStrings[game.Turn]
+	storedGame.MoveCount++
+
 	k.Keeper.SetStoredGame(ctx, storedGame)
 
 	ctx.EventManager().EmitEvent(
-    sdk.NewEvent(types.MovePlayedEventType,
+		sdk.NewEvent(types.MovePlayedEventType,
 			sdk.NewAttribute(types.MovePlayedEventCreator, msg.Creator),
 			sdk.NewAttribute(types.MovePlayedEventGameIndex, msg.GameIndex),
 			sdk.NewAttribute(types.MovePlayedEventCapturedX, strconv.FormatInt(int64(captured.X), 10)),
 			sdk.NewAttribute(types.MovePlayedEventCapturedY, strconv.FormatInt(int64(captured.Y), 10)),
 			sdk.NewAttribute(types.MovePlayedEventWinner, rules.PieceStrings[game.Winner()]),
-    ),
+		),
 	)
 
 	// Return relevant information regarding the move's result:
 	return &types.MsgPlayMoveResponse{
-    CapturedX: int32(captured.X),
-    CapturedY: int32(captured.Y),
-    Winner:    rules.PieceStrings[game.Winner()],
+		CapturedX: int32(captured.X),
+		CapturedY: int32(captured.Y),
+		Winner:    rules.PieceStrings[game.Winner()],
 	}, nil
 }
