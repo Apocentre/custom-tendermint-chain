@@ -47,7 +47,7 @@ func (storedGame StoredGame) Validate() (err error) {
 	if err != nil {
 		return err
 	}
-	
+
 	_, err = storedGame.ParseGame()
 	if err != nil {
 		return err
@@ -84,7 +84,7 @@ func (storedGame StoredGame) GetPlayerAddress(color string) (address sdk.AccAddr
 		rules.PieceStrings[rules.BLACK_PLAYER]: black,
 		rules.PieceStrings[rules.RED_PLAYER]:   red,
 	}[color]
-	
+
 	return address, found, nil
 }
 

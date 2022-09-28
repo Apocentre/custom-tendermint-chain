@@ -87,4 +87,3 @@ func (k *Keeper) MustRefundWager(ctx sdk.Context, storedGame *types.StoredGame) 
 		panic(fmt.Sprintf(types.ErrNotInRefundState.Error(), storedGame.MoveCount))
 	}
 }
-

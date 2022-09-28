@@ -57,7 +57,7 @@ const (
 )
 
 // On each update the deadline will always be now plus a fixed duration. In this context, now refers to
-// the block's time. Declare this duration as a new constant, plus how the date is to be represented - encoded 
+// the block's time. Declare this duration as a new constant, plus how the date is to be represented - encoded
 // in the saved game as a string
 const (
 	MaxTurnDuration = time.Duration(24 * 3_600 * 1000_000_000) // 1 day

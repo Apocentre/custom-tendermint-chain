@@ -27,7 +27,7 @@ func (k Keeper) ForfeitExpiredGames(goCtx context.Context) {
 
 	for {
 		// if your cursor has reached the end of the FIFO:
-    if gameIndex == types.NoFifoIndex {
+		if gameIndex == types.NoFifoIndex {
 			break
 		}
 
@@ -66,9 +66,9 @@ func (k Keeper) ForfeitExpiredGames(goCtx context.Context) {
 
 			ctx.EventManager().EmitEvent(
 				sdk.NewEvent(types.GameForfeitedEventType,
-						sdk.NewAttribute(types.GameForfeitedEventGameIndex, gameIndex),
-						sdk.NewAttribute(types.GameForfeitedEventWinner, storedGame.Winner),
-						sdk.NewAttribute(types.GameForfeitedEventBoard, lastBoard),
+					sdk.NewAttribute(types.GameForfeitedEventGameIndex, gameIndex),
+					sdk.NewAttribute(types.GameForfeitedEventWinner, storedGame.Winner),
+					sdk.NewAttribute(types.GameForfeitedEventBoard, lastBoard),
 				),
 			)
 

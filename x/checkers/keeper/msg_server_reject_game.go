@@ -14,17 +14,17 @@ func (k msgServer) RejectGame(goCtx context.Context, msg *types.MsgRejectGame) (
 
 	storedGame, found := k.Keeper.GetStoredGame(ctx, msg.GameIndex)
 	if !found {
-			return nil, sdkerrors.Wrapf(types.ErrGameNotFound, "%s", msg.GameIndex)
+		return nil, sdkerrors.Wrapf(types.ErrGameNotFound, "%s", msg.GameIndex)
 	}
 
 	if storedGame.Winner != rules.PieceStrings[rules.NO_PLAYER] {
-    return nil, types.ErrGameFinished
+		return nil, types.ErrGameFinished
 	}
 
 	if storedGame.Black == msg.Creator {
-    if 0 < storedGame.MoveCount { // Notice the use of the new field
+		if 0 < storedGame.MoveCount { // Notice the use of the new field
 			return nil, types.ErrBlackAlreadyPlayed
-    }
+		}
 	} else if storedGame.Red == msg.Creator {
 		if 1 < storedGame.MoveCount { // Notice the use of the new field
 			return nil, types.ErrRedAlreadyPlayed
@@ -34,10 +34,10 @@ func (k msgServer) RejectGame(goCtx context.Context, msg *types.MsgRejectGame) (
 	}
 
 	k.Keeper.MustRefundWager(ctx, &storedGame)
-	
+
 	systemInfo, found := k.Keeper.GetSystemInfo(ctx)
 	if !found {
-			panic("SystemInfo not found")
+		panic("SystemInfo not found")
 	}
 	// when rejecting a game remove the game from the FIFO:
 	k.Keeper.RemoveFromFifo(ctx, &storedGame, &systemInfo)
@@ -54,10 +54,10 @@ func (k msgServer) RejectGame(goCtx context.Context, msg *types.MsgRejectGame) (
 	ctx.GasMeter().RefundGas(refund, "Reject game")
 
 	ctx.EventManager().EmitEvent(
-    sdk.NewEvent(types.GameRejectedEventType,
-        sdk.NewAttribute(types.GameRejectedEventCreator, msg.Creator),
-        sdk.NewAttribute(types.GameRejectedEventGameIndex, msg.GameIndex),
-    ),
+		sdk.NewEvent(types.GameRejectedEventType,
+			sdk.NewAttribute(types.GameRejectedEventCreator, msg.Creator),
+			sdk.NewAttribute(types.GameRejectedEventGameIndex, msg.GameIndex),
+		),
 	)
 
 	return &types.MsgRejectGameResponse{}, nil

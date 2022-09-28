@@ -21,7 +21,7 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 
 	// Check that the game has not finished yet:
 	if storedGame.Winner != rules.PieceStrings[rules.NO_PLAYER] {
-    return nil, types.ErrGameFinished
+		return nil, types.ErrGameFinished
 	}
 
 	// Is the player legitimate

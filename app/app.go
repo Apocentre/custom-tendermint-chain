@@ -173,7 +173,7 @@ var (
 
 		// Finally, inform the app that your checkers module is going to hold balances in escrow by adding it to the whitelist of permitted modules:
 		checkersmoduletypes.ModuleName: nil,
-		
+
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )

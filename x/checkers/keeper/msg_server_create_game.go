@@ -22,17 +22,17 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 	// Create the object to be stored:
 	newGame := rules.New()
 	storedGame := types.StoredGame{
-		Index: gameId,
-		Board: newGame.String(),
-		Turn:  rules.PieceStrings[newGame.Turn],
-		Black: msg.Black,
-		Red:   msg.Red,
-		MoveCount: 0,
+		Index:       gameId,
+		Board:       newGame.String(),
+		Turn:        rules.PieceStrings[newGame.Turn],
+		Black:       msg.Black,
+		Red:         msg.Red,
+		MoveCount:   0,
 		BeforeIndex: types.NoFifoIndex,
-    AfterIndex:  types.NoFifoIndex,
-		Deadline: types.FormatDeadline(types.GetNextDeadline(ctx)),
-		Winner:    rules.PieceStrings[rules.NO_PLAYER],
-		Wager: msg.Wager,
+		AfterIndex:  types.NoFifoIndex,
+		Deadline:    types.FormatDeadline(types.GetNextDeadline(ctx)),
+		Winner:      rules.PieceStrings[rules.NO_PLAYER],
+		Wager:       msg.Wager,
 	}
 
 	// Confirm that the values in the object are correct by checking the validity

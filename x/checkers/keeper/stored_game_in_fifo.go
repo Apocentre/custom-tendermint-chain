@@ -5,7 +5,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-//remove from the FIFO
+// remove from the FIFO
 // The game passed as an argument is not saved in storage here, even if it was updated. Only its fields in memory are adjusted
 // The before and after games are saved in storage
 func (k Keeper) RemoveFromFifo(ctx sdk.Context, game *types.StoredGame, info *types.SystemInfo) {
@@ -20,7 +20,7 @@ func (k Keeper) RemoveFromFifo(ctx sdk.Context, game *types.StoredGame, info *ty
 		if game.AfterIndex == types.NoFifoIndex {
 			info.FifoTailIndex = beforeElement.Index
 		}
-			// Is it at the FIFO head?
+		// Is it at the FIFO head?
 	} else if info.FifoHeadIndex == game.Index {
 		info.FifoHeadIndex = game.AfterIndex
 	}
