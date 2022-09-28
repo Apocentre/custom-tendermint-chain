@@ -70,3 +70,7 @@ const (
 	GameForfeitedEventWinner    = "winner"
 	GameForfeitedEventBoard     = "board"
 )
+
+const (
+	GameCreatedEventWager = "wager"
+)

@@ -1,3 +1,8 @@
+// The only way to have access to a capability with the object-capability model of the Cosmos SDK is to be given
+// the reference to an instance which already has this capability.
+//
+// Declare an interface that narrowly declares the functions from other modules that you expect for your module.
+// The conventional file for these declarations is x/checkers/types/expected_keepers.go
 package types
 
 import (
@@ -15,4 +20,9 @@ type AccountKeeper interface {
 type BankKeeper interface {
 	SpendableCoins(ctx sdk.Context, addr sdk.AccAddress) sdk.Coins
 	// Methods imported from bank should be defined here
+}
+
+type BankEscrowKeeper interface {
+	SendCoinsFromModuleToAccount(ctx sdk.Context, senderModule string, recipientAddr sdk.AccAddress, amt sdk.Coins) error
+	SendCoinsFromAccountToModule(ctx sdk.Context, senderAddr sdk.AccAddress, recipientModule string, amt sdk.Coins) error
 }

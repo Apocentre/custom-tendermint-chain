@@ -170,6 +170,10 @@ var (
 		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
+
+		// Finally, inform the app that your checkers module is going to hold balances in escrow by adding it to the whitelist of permitted modules:
+		checkersmoduletypes.ModuleName: nil,
+		
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -390,6 +394,7 @@ func New(
 	monitoringModule := monitoringp.NewAppModule(appCodec, app.MonitoringKeeper)
 
 	app.CheckersKeeper = *checkersmodulekeeper.NewKeeper(
+		app.BankKeeper,
 		appCodec,
 		keys[checkersmoduletypes.StoreKey],
 		keys[checkersmoduletypes.MemStoreKey],
