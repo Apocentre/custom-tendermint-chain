@@ -28,13 +28,13 @@ func setupMsgServerCreateGame(t testing.TB) (types.MsgServer, keeper.Keeper, con
 func TestCreateGame(t *testing.T) {
 	msgServer, _, context := setupMsgServerCreateGame(t)
 
-	response, err := msgServer.CreateGame(context, &types.MsgCreateGame {
+	response, err := msgServer.CreateGame(context, &types.MsgCreateGame{
 		Creator: alice,
-		Black: bob,
-		Red: carol,
+		Black:   bob,
+		Red:     carol,
 	})
 
 	require.Nil(t, err)
 	require.Equal(t, response.GameIndex, "1")
-	require.EqualValues(t, types.MsgCreateGameResponse {GameIndex: "1"}, *response)
+	require.EqualValues(t, types.MsgCreateGameResponse{GameIndex: "1"}, *response)
 }
