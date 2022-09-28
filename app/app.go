@@ -470,6 +470,8 @@ func New(
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
+	// For the whole application to call your module you have to instruct it to do so. This takes place in app/app.go,
+	// where the application is initialized with the proper order to call the EndBlock functions in different modules.
 	app.mm.SetOrderEndBlockers(
 		crisistypes.ModuleName,
 		govtypes.ModuleName,
