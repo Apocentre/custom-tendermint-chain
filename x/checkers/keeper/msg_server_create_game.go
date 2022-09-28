@@ -30,6 +30,8 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 		MoveCount: 0,
 		BeforeIndex: types.NoFifoIndex,
     AfterIndex:  types.NoFifoIndex,
+		Deadline: types.FormatDeadline(types.GetNextDeadline(ctx)),
+		Winner:    rules.PieceStrings[rules.NO_PLAYER],
 	}
 
 	// Confirm that the values in the object are correct by checking the validity

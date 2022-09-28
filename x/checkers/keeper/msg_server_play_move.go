@@ -19,6 +19,11 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 		return nil, sdkerrors.Wrapf(types.ErrGameNotFound, "%s", msg.GameIndex)
 	}
 
+	// Check that the game has not finished yet:
+	if storedGame.Winner != rules.PieceStrings[rules.NO_PLAYER] {
+    return nil, types.ErrGameFinished
+	}
+
 	// Is the player legitimate
 	// This uses the certainty that the MsgPlayMove.Creator has been verified by its signature (opens new window)
 	isBlack := storedGame.Black == msg.Creator
@@ -61,6 +66,9 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 		return nil, sdkerrors.Wrapf(types.ErrWrongMove, moveErr.Error())
 	}
 
+	// Update the winner field, which remains neutral (opens new window)if there is no winner
+	storedGame.Winner = rules.PieceStrings[game.Winner()]
+
 	// Prepare the updated board to be stored and store the information:
 	storedGame.Board = game.String()
 	storedGame.Turn = rules.PieceStrings[game.Turn]
@@ -69,10 +77,18 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 	if !found {
 		panic("SystemInfo not found")
 	}
-	// when playing a move send the game back to the tail because it was freshly updated
-	k.Keeper.SendToFifoTail(ctx, &storedGame, &systemInfo)
+
+	lastBoard := game.String()
+	if storedGame.Winner == rules.PieceStrings[rules.NO_PLAYER] {
+		k.Keeper.SendToFifoTail(ctx, &storedGame, &systemInfo)
+		storedGame.Board = lastBoard
+	} else {
+		k.Keeper.RemoveFromFifo(ctx, &storedGame, &systemInfo)
+		storedGame.Board = ""
+	}
 
 	storedGame.MoveCount++
+	storedGame.Deadline = types.FormatDeadline(types.GetNextDeadline(ctx))
 
 	k.Keeper.SetStoredGame(ctx, storedGame)
 	k.Keeper.SetSystemInfo(ctx, systemInfo)
@@ -84,6 +100,7 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 			sdk.NewAttribute(types.MovePlayedEventCapturedX, strconv.FormatInt(int64(captured.X), 10)),
 			sdk.NewAttribute(types.MovePlayedEventCapturedY, strconv.FormatInt(int64(captured.Y), 10)),
 			sdk.NewAttribute(types.MovePlayedEventWinner, rules.PieceStrings[game.Winner()]),
+			sdk.NewAttribute(types.MovePlayedEventBoard, lastBoard),
 		),
 	)
 

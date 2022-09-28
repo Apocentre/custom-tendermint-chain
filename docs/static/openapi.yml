@@ -72,6 +72,10 @@ paths:
                       type: string
                     afterIndex:
                       type: string
+                    deadline:
+                      type: string
+                    winner:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -205,6 +209,10 @@ paths:
                   beforeIndex:
                     type: string
                   afterIndex:
+                    type: string
+                  deadline:
+                    type: string
+                  winner:
                     type: string
         default:
           description: An unexpected error response.
@@ -30747,6 +30755,10 @@ definitions:
               type: string
             afterIndex:
               type: string
+            deadline:
+              type: string
+            winner:
+              type: string
       pagination:
         type: object
         properties:
@@ -30795,6 +30807,10 @@ definitions:
             type: string
           afterIndex:
             type: string
+          deadline:
+            type: string
+          winner:
+            type: string
   apocentre.checkers.checkers.QueryGetSystemInfoResponse:
     type: object
     properties:
@@ -30834,6 +30850,10 @@ definitions:
       beforeIndex:
         type: string
       afterIndex:
+        type: string
+      deadline:
+        type: string
+      winner:
         type: string
   apocentre.checkers.checkers.SystemInfo:
     type: object

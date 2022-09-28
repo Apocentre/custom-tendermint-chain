@@ -1,5 +1,7 @@
 package types
 
+import "time"
+
 const (
 	// ModuleName defines the module name
 	ModuleName = "checkers"
@@ -40,6 +42,7 @@ const (
 	MovePlayedEventCapturedX = "captured-x"
 	MovePlayedEventCapturedY = "captured-y"
 	MovePlayedEventWinner    = "winner"
+	MovePlayedEventBoard     = "board"
 )
 
 const (
@@ -51,4 +54,12 @@ const (
 // There must be an "ID" that indicates no game. Use "-1", which you save as a constant:
 const (
 	NoFifoIndex = "-1"
+)
+
+// On each update the deadline will always be now plus a fixed duration. In this context, now refers to
+// the block's time. Declare this duration as a new constant, plus how the date is to be represented - encoded 
+// in the saved game as a string
+const (
+	MaxTurnDuration = time.Duration(24 * 3_600 * 1000_000_000) // 1 day
+	DeadlineLayout  = "2006-01-02 15:04:05.999999999 +0000 UTC"
 )
